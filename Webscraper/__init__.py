@@ -97,7 +97,7 @@ class SeleniumAddons(ABC):
 
 class CustomChrome(SeleniumAddons):
 
-    def __init__(self, incognito=True, headless=False, brave=False, disable_gpu=False) -> None:
+    def __init__(self, incognito=True, headless=False, path_to_chrome=None, disable_gpu=False) -> None:
         options = ChromeOptions()
 
         # https://stackoverflow.com/questions/64927909/failed-to-read-descriptor-from-node-connection-a-device-attached-to-the-system
@@ -114,15 +114,16 @@ class CustomChrome(SeleniumAddons):
         # options.add_argument("remote-debugging-port=9222")
         # options.add_argument("kiosk")
 
-        if os.name == 'nt':
-            # path_to_chrome = str(Path('./chromedriver.exe').relative_to('.'))
-            path_to_chrome = str(Path('./ChromeDrivers/Windows/chromedriver.exe').absolute())
-        elif os.name == 'darwin':
-            path_to_chrome = str(Path('./ChromeDrivers/Mac/chromedriver').absolute())
-        elif os.name == 'posix':
-            path_to_chrome = str(Path('./ChromeDrivers/Linux/chromedriver').absolute())
-        else:
-            raise UnrecognizedOSError('Unable to recogized Operating System')
+        if path_to_chrome is None:
+            if os.name == 'nt':
+                # path_to_chrome = str(Path('./chromedriver.exe').relative_to('.'))
+                path_to_chrome = str(Path('./ChromeDrivers/Windows/chromedriver.exe').absolute())
+            elif os.name == 'darwin':
+                path_to_chrome = str(Path('./ChromeDrivers/Mac/chromedriver').absolute())
+            elif os.name == 'posix':
+                path_to_chrome = str(Path('./ChromeDrivers/Linux/chromedriver').absolute())
+            else:
+                raise UnrecognizedOSError('Unable to recogized Operating System')
         self.browser = Chrome(path_to_chrome, options=options)
 
 class CustomBrave(SeleniumAddons):
