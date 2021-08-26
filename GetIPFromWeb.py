@@ -6,7 +6,7 @@ from pathlib import Path
 if __name__ == '__main__':
 
     ip_info = {}
-    with CustomChrome(incognito=False) as web_scraper_with_context_manager:
+    with CustomChrome(incognito=False, path_to_chrome='/usr/bin/chromedriver', headless=True, disable_gpu=True) as web_scraper_with_context_manager:
         web_scraper_with_context_manager.browser.get('https://www.ipchicken.com')
         web_scraper_with_context_manager.wait_until_css_element_object_found('font[color="#0000FF"]')
         ip_elem = web_scraper_with_context_manager.browser.find_element_by_css_selector('font[color="#0000FF"]')
